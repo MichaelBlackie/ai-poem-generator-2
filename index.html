@@ -6,6 +6,45 @@
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   </head>
   <body>
-
+	<py-config>
+      packages = ["os", "openai"]
+    </py-config>
+	
+	<py-script>
+		import openai
+		import os
+		openai.api_key = "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"
+		completion = openai.Completion()
+		global subject
+		subject = str(input("What is the subject of the poem?"))
+		main_text = "Write me a poem about "
+		global subject
+		to_ask = main_text + subject
+		try:
+		    response = openai.Completion.create(
+				engine = "text-davinci-003",
+				prompt = to_ask,
+				temperature = 0.5,
+				max_tokens = 1024,
+				top_p = 1,
+				n = 1,
+				presence_penalty = 0.6
+			)  
+			response = response["choices"][0]["text"]
+			print(response+"\n")
+			return response
+		except:
+			return "Server Error"
+		try:
+			response = openai.Image.create(
+				prompt=subject,
+				n=1,
+				size="1024x1024"
+			)
+			image_url = response['data'][0]['url']
+			return image_url
+		except:
+			return "Server Error"
+	</py-script>
   </body>
 </html>
